@@ -1,0 +1,43 @@
+.group:focus .group-focus\:flex {
+    display: flex;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.theme-button {
+    width: 48px;
+    height: 24px;
+    border: none;
+    background-color: #ccc;
+    border-radius: 12px;
+    padding: 2px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    outline: none;
+}
+
+.toggle-circle {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #2196F3;
+    transform: translateX(0);
+    transition: transform 0.3s ease-in-out;
+}
+
+body.dark .toggle-circle {
+    transform: translateX(24px);
+    background-color: #3B82F6;
+}
+
+#barChart {
+    margin-bottom: 20px;
+}

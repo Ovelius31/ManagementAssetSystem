@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Popup Edit</title>
+  <style>
+    .popup {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      z-index: 1;
+    }
+
+    .modal-content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: white;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    }
+    
+    /* Tambahkan gaya lain sesuai kebutuhan */
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+  </style>
+</head>
+<body>
+
+<div id="popup1" class="popup">
+  <div class="modal-content">
+    <h2>Edit</h2>
+    <form id="editForm">
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username" required>
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required>
+      <button type="button" id="updateButton" onclick="updateData()">Update</button>
+      <button type="button" id="deleteButton" onclick="confirmDelete()">Delete</button>
+      <button type="button" id="cancelButton" onclick="cancelEdit()">Cancel</button>
+    </form>
+  </div>
+</div>
+
+<!-- Tabel untuk menampilkan data yang telah didaftarkan -->
+<table id="dataTable">
+  <thead>
+    <tr>
+      <th>Username</th>
+      <th>Password</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- Isi tabel dengan data yang telah didaftarkan -->
+    <tr>
+      <td>User1</td>
+      <td>Password1</td>
+      <td><a href="#" onclick="editRow(this)">Edit</a></td>
+    </tr>
+    <tr>
+      <td>User2</td>
+      <td>Password2</td>
+      <td><a href="#" onclick="editRow(this)">Edit</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<script>
+  let editingRow = null;
+
+  // Fungsi untuk menampilkan popup edit
+  function editRow(link) {
+    editingRow = link.parentNode.parentNode;
+    const username = editingRow.cells[0].textContent;
+    const password = editingRow.cells[1].textContent;
+    document.getElementById("username").value = username;
+    document.getElementById("password").value = password;
+    document.getElementById("popup1").style.display = "block";
+  }
+
+  // Fungsi untuk menyembunyikan popup edit
+  function cancelEdit() {
+    document.getElementById("popup1").style.display = "none";
+    editingRow = null;
+  }
+
+  // Fungsi untuk menyimpan perubahan edit
+  function updateData() {
+    if (editingRow) {
+      const newUsername = document.getElementById("username").value;
+      const newPassword = document.getElementById("password").value;
+      editingRow.cells[0].textContent = newUsername;
+      editingRow.cells[1].textContent = newPassword;
+      cancelEdit();
+    }
+  }
+
+  // Fungsi untuk menampilkan popup konfirmasi delete
+  function confirmDelete() {
+    const confirmation = confirm("Are you sure you want to delete this data?");
+    if (confirmation) {
+      deleteRow();
+      cancelEdit();
+      alert("Data deleted successfully!");
+    }
+  }
+
+  // Fungsi untuk menghapus baris dari tabel
+  function deleteRow() {
+    if (editingRow) {
+      editingRow.remove();
+      editingRow = null;
+    }
+  }
+</script>
+
+</body>
+</html>
