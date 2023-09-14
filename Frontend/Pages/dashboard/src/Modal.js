@@ -17,5 +17,5 @@ function closePopup() {
 }
 // Fungsi untuk logout dan mengarahkan ke halaman login
 function logout() {
-    window.location.href = "/IT%20Management%20Asset/Frontend/LoginScreen/src/Login.html";
+    window.location.href = "/Frontend/LoginScreen/src/Login.html";
 }

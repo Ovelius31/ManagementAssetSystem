@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,14 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    
     <title>Login</title>
 </head>
 <body>
     <section class="bg-gray-900 min-h-screen flex items-center justify-center">
         <div class="bg-gray-100 flex flex-col md:flex-row rounded-2xl shadow-lg max-w-3xl p-5 md:pl-0 md:pr-8 items-center md:items-start h-[calc(100vh - 100px)]">
             <div class="md:w-1/2 md:px-16 relative">
-                <img class="max-w-full h-auto mb-6 mx-auto" src="/IT%20Management%20Asset/Frontend/LoginScreen/img/Sitelogo-1.png" alt="Logo">
-                <form action="/IT%20Management%20Asset/Backend/Database.js" class="flex flex-col gap-4" id="login-form" method="POST">
+                <img class="max-w-full h-auto mb-6 mx-auto" src="/Frontend/LoginScreen/img/Sitelogo-1.png" alt="Logo">
+                <form class="flex flex-col gap-4" id="login-form" method="POST" action="/Backend/src/login.php">
                     <div class="py-2">
                         <input placeholder="Username" type="text"
                             class="text-md block px-3 py-2 rounded-lg w-full bg-white border-2 border-gray-300 placeholder-gray-600 shadow-md focus:placeholder-gray-500 focus:bg-white focus:border-gray-600 focus:outline-none"
@@ -50,12 +52,11 @@
                 </form>
             </div>
             <div class="md:block hidden w-1/2">
-                <img class="rounded-2xl h-auto max-h-[80vh] mx-auto" src="/IT%20Management%20Asset/Frontend/LoginScreen/img/gambar1.jpeg"
+                <img class="rounded-2xl h-auto max-h-[80vh] mx-auto" src="/Frontend/LoginScreen/img/gambar1.jpeg"
                     style="width: max-content; object-fit: cover;">
             </div>
         </div>
     </section>
-    <script type="module" src="/IT%20Management%20Asset/Frontend/LoginScreen/src/Login.js"></script>
-    <script type="module" src="/IT%20Management%20Asset/Frontend/LoginScreen/src/Login2.js"></script>
+    <script  src="/Frontend/LoginScreen/src/Login.js"></script>
 </body>
 </html>

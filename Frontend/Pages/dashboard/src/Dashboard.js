@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             {
                 label: 'Item',
                 backgroundColor: ['#4299e1', '#ecc94b', '#f6ad55', '#f56565', '#98FB98'],
-                data: [0, 0, 0, 0, 0], // Default data
+                data: [0, 0, 0, 0, 0], 
             },
         ],
     };
@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     async function fetchData(startDate, endDate) {
         try {
-            const response = await fetch(`/api/data?startDate=${startDate}&endDate=${endDate}`);
+            const response = await fetch(`Backend/src/grafik.php?startDate=${startDate}&endDate=${endDate}`);
             const data = await response.json();
             return data;
         } catch (error) {
@@ -48,6 +48,10 @@ document.addEventListener('DOMContentLoaded', async function () {
         chart.update();
     }
 
+    // Memperbarui grafik saat halaman dimuat
+    const initialData = await fetchData();
+    updateChartWithData(initialData);
+
     const shortDateInput = document.getElementById('sortDateInput');
     const endDateInput = document.getElementById('endDateInput');
 
@@ -62,24 +66,4 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     shortDateInput.addEventListener('change', updateChart);
     endDateInput.addEventListener('change', updateChart);
-
-    // Render grafik dengan data yang diurutkan
-    function renderChart(sortedData) {
-        // ... (kode untuk merender grafik) ...
-    }
-
-    // Event listener saat input tanggal diubah
-    const sortDateSelect = document.getElementById('sortDateSelect');
-    sortDateSelect.addEventListener('change', () => {
-        const selectedDate = new Date(shortDateInput.value);
-        const filteredData = data.filter(item => {
-            const itemDate = new Date(item.date);
-            return itemDate.toDateString() === selectedDate.toDateString();
-        });
-        const order = sortDateSelect.value;
-        const sortedData = sortByDate(filteredData, order);
-        renderChart(sortedData);
-    });
-
-    
 });

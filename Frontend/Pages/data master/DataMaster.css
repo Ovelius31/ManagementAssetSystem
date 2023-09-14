@@ -82,3 +82,16 @@ button[type="submit"] {
     border-radius: 5px;
     cursor: pointer;
 }
+
+.filter-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.filter-container input {
+  width: 100%;
+  max-width: 200px;
+  padding: 8px;
+  margin-right: 10px;
+}
