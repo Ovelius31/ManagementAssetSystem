@@ -1,4 +1,10 @@
 <?php
+
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "item_management_system";
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['action'])) {
         $action = $_POST['action'];
@@ -22,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $amount = mysqli_real_escape_string($conn, $data['amount']);
             
             
-            $query = "INSERT INTO asset (CodeItem, ItemName, Category, Location, Condition, DateOfPurchase, Price, AdjustmentDate, Photo, Amount) VALUES ('$codeItem', '$itemName', '$category', '$location', '$condition', '$dateOfPurchase', '$price', '$adjustmentDate', '$photoLink', '$amount')";
+            $query = "INSERT INTO asset (CodeItem, ItemName, Category, Location, Condition, DateOfPurchase, Price, AdjustmentDate, Photo, Amount) VALUES ('$codeItem', '$itemName', '$category', '$location', '$condition', '$dateOfPurchase', '$price', '$adjustmentDate', '$photo', '$amount')";
             
             $result = mysqli_query($conn, $query);
             
@@ -35,8 +41,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
             
             mysqli_close($conn);
-        } else {
-            // Tangani tindakan lainnya jika diperlukan
         }
     }
 }

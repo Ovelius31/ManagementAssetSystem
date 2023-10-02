@@ -1,25 +1,20 @@
 <IfModule mod_rewrite.c>
-    <IfModule mod_negotiation.c>
-        Options -MultiViews -Indexes
-    </IfModule>
-
     RewriteEngine On
+    RewriteBase /
 
-    # Handle Authorization Header
-    RewriteCond %{HTTP:Authorization} .
-    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
-
-    # Redirect Trailing Slashes If Not A Folder...
+    # Hapus trailing slashes jika bukan folder
     RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteCond %{REQUEST_URI} (.+)/$
-    RewriteRule ^ %1 [L,R=301]
+    RewriteRule ^(.+)/$ /$1 [L,R=301]
 
-    # Handle Front Controller...
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteRule ^ index.php [L] 
+    # Aturan untuk folder asset
+    RewriteRule ^asset/delete$ asset/delete.php [L]
+    RewriteRule ^asset/grafik$ asset/grafik.php [L]
+    RewriteRule ^asset/input$ asset/input.php [L]
+    RewriteRule ^asset/read$ asset/read.php [L]
 
-    # Additional rule to serve images if they exist
-    RewriteCond %{REQUEST_FILENAME} -f
-    RewriteRule \.(jpg|jpeg|png|gif|bmp|ico)$ - [L]
+    # Aturan untuk folder user
+    RewriteRule ^user/delete_user$ user/delete_user.php [L]
+    RewriteRule ^user/getData$ user/getData.php [L]
+    RewriteRule ^user/login$ user/login.php [L]
+    RewriteRule ^user/update$ user/update.php [L]
 </IfModule>

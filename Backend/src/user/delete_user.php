@@ -1,9 +1,9 @@
 <?php
 // Koneksi ke database (gantilah dengan koneksi sesuai dengan database Anda)
 $servername = "localhost";
-$username = "username";
-$password = "password";
-$dbname = "nama_database";
+$username = "root";
+$password = "";
+$dbname = "Item_management_system";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 

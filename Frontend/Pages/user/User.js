@@ -12,7 +12,7 @@ function closePopup() {
     closeModal(); 
 }
 function logout() {
-    window.location.href = "/Frontend/LoginScreen/src/Login.html"; 
+    window.location.href = "/IT%20Management%20Asset/Frontend/LoginScreen/src/Login.html"; 
 }
 
 const activePage = window.location.pathname;
@@ -98,7 +98,7 @@ const navLinks = document.querySelectorAll('nav a').
   
     xhr.onreadystatechange = function () {
       if (xhr.readyState === 4 && xhr.status === 200) {
-        // Sukses menghapus data dari database, maka Anda dapat menghapus baris dari tabel pada klien
+        
         row.remove();
         console.log(xhr.responseText); // Pesan sukses atau pesan kesalahan dari server
       }
@@ -107,35 +107,43 @@ const navLinks = document.querySelectorAll('nav a').
     xhr.send("id=" + id); // Kirim ID sebagai data POST
   }
   
-  document.addEventListener("DOMContentLoaded", function () {
-    // Fetch user data from the server
-    fetch("getData.php")
+  function fetchData() {
+    fetch("/IT%20Management%20Asset/Backend/src/user/getData.php")
       .then((response) => response.json())
       .then((data) => {
-        // Populate the table with user data
-        const userTable = document.getElementById("userTable");
-        const tbody = userTable.querySelector("tbody");
-  
-        data.forEach((user) => {
-          const row = document.createElement("tr");
-          row.innerHTML = `
-            <td class="p-3 border text-center">${user.username}</td>
-            <td class="p-3 border text-center">${user.division}</td>
-            <td class="p-3 border text-center">${user.role}</td>
-            <td class="p-3 border text-center">${user.password}</td>
-            <td class="p-3 border text-center" style="vertical-align: middle;">
-              <button onclick="showEditPopup(this)" class=" justify-center items-center ">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-blue-400 flex" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="cursor: pointer;">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                </svg>
-              </button>
-            </td>
-          `;
-          tbody.appendChild(row);
-        });
+        displayData(data); // Panggil fungsi displayData untuk menampilkan data dalam tabel
       })
       .catch((error) => {
         console.error("Error fetching user data: ", error);
       });
-  });
-  
+  }
+
+  // Fungsi untuk menampilkan data dalam tabel
+  function displayData(data) {
+    const userTable = document.getElementById("userTable");
+    const tbody = userTable.querySelector("tbody");
+
+    // Bersihkan isi tabel
+    tbody.innerHTML = '';
+
+    // Loop melalui data dan tambahkan baris-baris ke dalam tabel
+    data.forEach((user) => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td class="p-3 border text-center">${user.username}</td>
+        <td class="p-3 border text-center">${user.division}</td>
+        <td class="p-3 border text-center">${user.role}</td>
+        <td class="p-3 border text-center">${user.password}</td>
+        <td class="p-3 border text-center" style="vertical-align: middle;">
+          <button onclick="showEditPopup(this)" class=" justify-center items-center ">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-blue-400 flex" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="cursor: pointer;">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+            </svg>
+          </button>
+        </td>
+      `;
+      tbody.appendChild(row);
+    });
+  }
+
+  fetchData();

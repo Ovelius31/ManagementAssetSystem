@@ -1,5 +1,6 @@
 <?php
-// Pastikan ini adalah koneksi ke database yang benar
+//  koneksi ke database 
+
 $mysqli = new mysqli("localhost", "root", "", "item_management_system");
 
 // Periksa koneksi

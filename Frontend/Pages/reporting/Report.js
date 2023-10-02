@@ -1,3 +1,20 @@
+function openModal() {
+    document.getElementById('backdrop').classList.add('opacity-100');
+    document.getElementById('modalContainer').classList.remove('hidden');
+}
+
+function closeModal() {
+    document.getElementById('backdrop').classList.remove('opacity-100');
+    document.getElementById('modalContainer').classList.add('hidden');
+}
+function closePopup() {
+    closeModal(); 
+}
+function logout() {
+    window.location.href = "/IT%20Management%20Asset/Frontend/LoginScreen/src/Login.html"; 
+}
+
+
 // Fungsi untuk menampilkan hasil pencarian di tabel
 function displaySearchResults(data) {
     const resultTable = document.getElementById('resultTable');
@@ -157,3 +174,41 @@ links.forEach(link => {
         link.classList.add('active');
     });
 });
+
+// Fungsi untuk mengambil dan menampilkan data dari endpoint API
+function fetchData() {
+    fetch('/IT%20Management%20Asset/Backend/src/asset/read.php') 
+      .then(response => response.json())
+      .then(data => {
+        // Manipulasi data dan tampilkan dalam tabel
+        const table = document.getElementById('#resultTable');
+        const tbody = table.querySelector('tbody');
+
+        // Clear existing table data
+        tbody.innerHTML = '';
+
+        // Loop through the data and create table rows
+        data.forEach(item => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td class="p-3 border text-center items-center">${item.code}</td>
+            <td class="p-3 border text-center items-center">${item.name}</td>
+            <td class="p-3 border text-center items-center">${item.category}</td>
+            <td class="p-3 border text-center items-center">${item.dateOfPurchase}</td>
+            <td class="p-3 border text-center items-center">${item.price}</td>
+            <td class="p-3 border text-center items-center">${item.adjustmentDate}</td>
+            <td class="p-3 border text-center items-center">${item.location}</td>
+            <td class="p-3 border text-center items-center">${item.condition}</td>
+            <td class="p-3 border text-center items-center">${item.photo}</td>
+            <td class="p-3 border text-center items-center">${item.amount}</td>
+          `;
+          tbody.appendChild(row);
+        });
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  }
+
+  // Panggil fungsi fetchData saat halaman dimuat
+  window.onload = fetchData;

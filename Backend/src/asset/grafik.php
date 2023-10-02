@@ -1,30 +1,17 @@
 <?php
-// Koneksi ke database 
-$conn = mysqli_connect("localhost", "root", "", "item_management_system");
+//koneksi ke database
+$pdo = new PDO("mysql:host=localhost;dbname=item_management_system", "root", "");
 
-// Periksa koneksi
-if (!$conn) {
-    die("Koneksi ke database gagal: " . mysqli_connect_error());
-}
+$startDate = isset($_GET['startDate']) ? $_GET['startDate'] : null;
+$endDate = isset($_GET['endDate']) ? $_GET['endDate'] : null;
 
-// Query untuk mengambil data dari tabel asset
-$query = "SELECT * FROM asset";
+$query = "SELECT `Condition` FROM `asset` WHERE `Input Date` BETWEEN :startDate AND :endDate AND `Condition` IN ('New', 'Old', 'Repaired', 'Bad', 'Moved')";
 
-// Jalankan query
-$result = mysqli_query($conn, $query);
+$stmt = $pdo->prepare($query);
+$stmt->bindParam(':startDate', $startDate, PDO::PARAM_STR);
+$stmt->bindParam(':endDate', $endDate, PDO::PARAM_STR);
+$stmt->execute();
 
-// Inisialisasi array untuk data JSON
-$data = array();
-
-while ($row = mysqli_fetch_assoc($result)) {
-    // Tambahkan setiap baris data ke array
-    $data[] = $row;
-}
-
-// Tutup koneksi
-mysqli_close($conn);
-
-// Mengembalikan data dalam format JSON
-header("Content-Type: application/json");
-echo json_encode($data);
+$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+echo json_encode($results);
 ?>

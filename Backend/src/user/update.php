@@ -6,12 +6,11 @@ if(isset($_POST['update_user'])){
     $division = $_POST['Division'];
     $role = $_POST['Role'];
 
-    // Lakukan validasi data jika diperlukan
 
-    // Koneksi ke database (ganti dengan informasi koneksi yang sesuai)
+    // Koneksi ke database 
     $conn = mysqli_connect("localhost", "root", "", "item_management_system");
 
-    // Hash password sebelum menyimpannya ke database (disarankan)
+    // Hash password sebelum menyimpannya ke database 
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
     // Query untuk mengupdate data di tabel user berdasarkan ID

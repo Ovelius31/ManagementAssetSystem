@@ -5,35 +5,41 @@ $(document).ready(function () {
 });
 
 document.addEventListener("DOMContentLoaded", function () {
-  const dropdownButton = document.getElementById("apple-imac-20-dropdown-button");
-  const dropdown = document.getElementById("apple-imac-20-dropdown");
-
-  dropdownButton.addEventListener("click", function () {
+  // Fungsi untuk menangani tampilan/penyembunyian dropdown
+  function toggleDropdown() {
+    const dropdown = document.getElementById("apple-imac-20-dropdown");
     dropdown.classList.toggle("hidden");
-  });
+  }
+
+  const dropdownButton = document.getElementById("apple-imac-20-dropdown-button");
+  dropdownButton.addEventListener("click", toggleDropdown);
 });
 
 document.addEventListener("DOMContentLoaded", function () {
+  // Fungsi untuk menangani tampilan/penyembunyian modal
+  function toggleModal(targetId) {
+    const modal = document.getElementById(targetId);
+    modal.classList.toggle("hidden");
+  }
+
   const modalToggleButtons = document.querySelectorAll("[data-modal-toggle]");
   const modalHideButtons = document.querySelectorAll("[data-modal-hide]");
-  const modals = document.querySelectorAll("[data-modal-target]");
 
   modalToggleButtons.forEach(button => {
     button.addEventListener("click", () => {
       const target = button.getAttribute("data-modal-target");
-      const modal = document.querySelector(`#${target}`);
-      modal.classList.toggle("hidden");
+      toggleModal(target);
     });
   });
 
   modalHideButtons.forEach(button => {
     button.addEventListener("click", () => {
       const target = button.getAttribute("data-modal-hide");
-      const modal = document.querySelector(`#${target}`);
-      modal.classList.add("hidden");
+      toggleModal(target);
     });
   });
 });
+
 // Menangkap elemen tombol reset filter
 const resetFilterButton = document.querySelector('.bg-green-500');
 
@@ -53,179 +59,6 @@ resetFilterButton.addEventListener('click', function () {
     input.value = '';
   });
 });
-
-function openModal() {
-  document.getElementById('backdrop').classList.add('opacity-100');
-  document.getElementById('modalContainer').classList.remove('hidden');
-}
-
-function closeModal() {
-  document.getElementById('backdrop').classList.remove('opacity-100');
-  document.getElementById('modalContainer').classList.add('hidden');
-}
-function closePopup() {
-  closeModal();
-}
-function logout() {
-  window.location.href = "/Frontend/LoginScreen/src/Login.html";
-}
-
-//buka popup
-document.addEventListener('DOMContentLoaded', function () {
-  const backdrop = document.getElementById('backdrop');
-  const popup = document.getElementById('popup');
-  const openModalButton = document.getElementById('openModalButton');
-  const cancelButton = document.getElementById('cancelButton');
-
-  openModalButton.addEventListener('click', function () {
-    backdrop.style.display = 'block';
-    popup.style.display = 'block';
-  });
-
-  cancelButton.addEventListener('click', function () {
-    backdrop.style.display = 'none';
-    popup.style.display = 'none';
-  });
-
-  const modal = document.getElementById("popup");
-
-  const span = modal.querySelector(".close");
-  span.onclick = function () {
-    popup.style.display = 'none';
-    backdrop.style.display = 'none';
-  };
-
-  window.onclick = function (event) {
-    if (event.target === backdrop) {
-      popup.style.display = 'none';
-      backdrop.style.display = 'none';
-    }
-  };
-});
-
-const logoLink = document.querySelector('.text-blue-400');
-const backdrop = document.getElementById('backdrop2');
-const popup = document.getElementById('popup2');
-
-logoLink.addEventListener('click', function (event) {
-  event.preventDefault();
-  backdrop.style.display = 'block';
-  popup.style.display = 'block';
-});
-
-
-//addData
-const form = document.getElementById("addDataForm");
-
-document.getElementById("addDataForm").addEventListener("submit", async function (event) {
-  event.preventDefault();
-
-  const form = event.target;
-
-  const codeItem = generateCodeItem();
-  const itemName = form.elements.itemName.value;
-  const category = form.elements.category.value;
-  const location = form.elements.location.value;
-  const condition = form.elements.condition.value;
-  const purchaseDate = form.elements.purchaseDate.value;
-  const price = form.elements.price.value;
-  const adjustmentDate = form.elements.adjustmentDate.value;
-  const photoLink = form.elements.photoLink.value;
-  const amount = 1;
-
-  const data = {
-    codeItem,
-    itemName,
-    category,
-    location,
-    condition,
-    purchaseDate,
-    price,
-    adjustmentDate,
-    photoLink,
-    amount
-  };
-
-  data.action = 'saveData';
-
-  try {
-    const response = await fetch("/Backend/src/asset/input.php", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(data)
-    });
-
-    if (response.ok) {
-      const responseData = await response.json();
-      console.log("Data saved successfully:", responseData);
-    } else {
-      console.error("Failed to save data.");
-    }
-  } catch (error) {
-    console.error("An error occurred:", error);
-  }
-});
-//generate code item
-function generateCodeItem() {
-  const currentDate = new Date();
-  const year = currentDate.getFullYear().toString().substr(2);
-  const month = (currentDate.getMonth() + 1).toString().padStart(2, "0");
-  const day = currentDate.getDate().toString().padStart(2, "0");
-  const locationAbbreviation = form.elements.location.value.slice(-2);
-  const categoryAbbreviation = form.elements.category.value.slice(0, 2);
-  const idString = "0001";
-  return `${year}${month}${day}${locationAbbreviation}${categoryAbbreviation}${idString}`;
-}
-
-
-function fetchData() {
-  fetch('/Backend/src/asset/read.php')
-    .then(response => response.json())
-    .then(data => {
-      // Setelah data diterima, panggil fungsi untuk menampilkan data dalam tabel
-      displayData(data);
-    })
-    .catch(error => {
-      console.error('Terjadi kesalahan:', error);
-    });
-}
-
-// Fungsi untuk menampilkan data dalam tabel
-function displayData(data) {
-  const tableBody = document.querySelector('#data-table tbody');
-
-  // Bersihkan isi tabel
-  tableBody.innerHTML = '';
-
-  // Loop melalui data dan tambahkan baris-baris ke dalam tabel
-  data.forEach(item => {
-    const row = document.createElement('tr');
-    row.innerHTML = `
-      <td class="p-3 border text-center items-center">${item.code}</td>
-      <td class="p-3 border text-center items-center">${item.name}</td>
-      <td class="p-3 border text-center items-center">${item.category}</td>
-      <td class="p-3 border text-center items-center">${item.dateOfPurchase}</td>
-      <td class="p-3 border text-center items-center">${item.price}</td>
-      <td class="p-3 border text-center items-center">${item.adjustmentDate}</td>
-      <td class="p-3 border text-center items-center">${item.location}</td>
-      <td class="p-3 border text-center items-center">${item.condition}</td>
-      <td class="p-3 border text-center items-center">${item.photo}</td>
-      <td class="p-3 border text-center items-center">${item.amount}</td>
-      <td class="px-6 py-4 text-sm leading-5 text-gray-500 whitespace-no-wrap border border-gray-200">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-blue-400" fill="none" viewbox="0 0 24 24" stroke="currentColor" style="cursor: pointer;">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-        </svg>
-      </td>      
-    `;
-    tableBody.appendChild(row);
-  });
-}
-
-// Panggil fungsi fetchData() untuk mengambil data saat halaman dimuat
-fetchData();
-
 
 // Fungsi untuk membuka popup edit data
 function editData(button) {
@@ -257,37 +90,99 @@ function editData(button) {
   document.getElementById('amountUpdate').value = amount;
 
   // Tampilkan modal edit
-  openEditModal(); // Anda perlu mengganti ini sesuai dengan nama fungsi yang digunakan untuk menampilkan modal edit
+  toggleModal("modalContainer"); 
 }
 
-// Temukan tombol "Apply Data"
+function openModal() {
+  document.getElementById('backdrop').classList.add('opacity-100');
+  document.getElementById('modalContainer').classList.remove('hidden');
+}
+
+function closeModal() {
+  document.getElementById('backdrop').classList.remove('opacity-100');
+  document.getElementById('modalContainer').classList.add('hidden');
+}
+function closePopup() {
+  document.getElementById('popup').style.display = 'none';
+  closeModal(); 
+}
+function logout() {
+  window.location.href = "/IT%20Management%20Asset/Frontend/LoginScreen/src/Login.html"; 
+}
+
+// Menangkap elemen tombol "Apply Filter"
 const applyFilterButton = document.getElementById('applyFilterButton');
 
-// Tambahkan event listener untuk tombol "Apply Data"
+// Tambahkan event listener untuk tombol "Apply Filter"
 applyFilterButton.addEventListener('click', function () {
-  // Mendapatkan nilai filter dari elemen-elemen select
+  // Mendapatkan nilai filter dari elemen-elemen select atau input filter
   const categoryFilter = document.querySelector('#categoryFilter').value;
   const locationFilter = document.querySelector('#locationFilter').value;
   const conditionFilter = document.querySelector('#conditionFilter').value;
   const purchaseDateFilter = document.querySelector('#purchaseDateFilter').value;
   const adjustmentDateFilter = document.querySelector('#adjustmentDateFilter').value;
 
-  // Melakukan filter pada data sesuai dengan nilai yang dipilih
-  const filteredData = yourDataArray.filter(item => {
-    // Anda dapat menyesuaikan ini sesuai dengan struktur data Anda
-    return (
-      (categoryFilter === '' || item.category === categoryFilter) &&
-      (locationFilter === '' || item.location === locationFilter) &&
-      (conditionFilter === '' || item.condition === conditionFilter) &&
-      (purchaseDateFilter === '' || item.dateOfPurchase === purchaseDateFilter) &&
-      (adjustmentDateFilter === '' || item.adjustmentDate === adjustmentDateFilter)
-    );
-  });
-
-  // Menampilkan data yang sudah difilter di tabel
-  displayData(filteredData);
+  // Lakukan filter pada data dengan mengirim filter ke server
+  fetch(`/IT%20Management%20Asset/Backend/src/asset/filter.php?categoryFilter=${categoryFilter}&locationFilter=${locationFilter}&conditionFilter=${conditionFilter}&dateOfPurchaseFilter=${purchaseDateFilter}&adjustmentDateFilter=${adjustmentDateFilter}`)
+    .then(response => response.json())
+    .then(data => {
+      // Memanggil fungsi untuk menampilkan data yang sudah difilter dalam tabel
+      displayData(data);
+    })
+    .catch(error => {
+      console.error('Terjadi kesalahan:', error);
+    });
 });
 
+
+// Fungsi untuk mengambil dan menampilkan data
+function fetchData() {
+  fetch('/IT%20Management%20Asset/Backend/src/asset/read.php')
+    .then(response => response.json())
+    .then(data => {
+
+      displayData(data);
+    })
+    .catch(error => {
+      console.error('Terjadi kesalahan:', error);
+    });
+}
+
+// Fungsi untuk menampilkan data dalam tabel
+function displayData(data) {
+  const tableBody = document.querySelector('#data-table tbody');
+
+  // Bersihkan isi tabel
+  tableBody.innerHTML = '';
+
+  // Loop melalui data dan tambahkan baris-baris ke dalam tabel
+  data.forEach(item => {
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td class="p-3 border text-center items-center">${item["Code Item"]}</td>
+      <td class="p-3 border text-center items-center">${item["Item Name"]}</td>
+      <td class="p-3 border text-center items-center">${item["Category"]}</td>
+      <td class="p-3 border text-center items-center">${item["Date of Purchase"]}</td>
+      <td class="p-3 border text-center items-center">${item["Price"]}</td>
+      <td class="p-3 border text-center items-center">${item["Adjustment Date"]}</td>
+      <td class="p-3 border text-center items-center">${item["Location"]}</td>
+      <td class="p-3 border text-center items-center">${item["Condition"]}</td>
+      <td class="p-3 border text-center items-center">${item["Photo"]}</td>
+      <td class="p-3 border text-center items-center">${item["Amount"]}</td>
+      <td class="px-6 py-4 text-sm leading-5 text-gray-500 whitespace-no-wrap border border-gray-200">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" onclick="openPopup2" style="cursor: pointer;">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+        </svg>
+      </td>      
+    `;
+    tableBody.appendChild(row);
+  });
+}
+
+// Panggil fetchData() saat halaman dimuat
+fetchData();
+
+// Fungsi untuk menghapus data
 function deleteData(id) {
   // Konfirmasi penghapusan
   const confirmation = confirm("Apakah Anda yakin ingin menghapus data ini?");
@@ -300,7 +195,7 @@ function deleteData(id) {
     }
 
     // Mengirim permintaan ke server untuk menghapus data berdasarkan ID
-    fetch(`/Backend/src/asset/delete.php?id=${id}`, {
+    fetch(`/IT%20Management%20Asset/Backend/src/asset/delete.php?id=${id}`, {
       method: "DELETE",
     })
       .then((response) => response.json())
@@ -317,3 +212,91 @@ function deleteData(id) {
   }
 }
 
+
+// Menambahkan event listener untuk membuka popup
+document.addEventListener('DOMContentLoaded', function () {
+  const openModalButton = document.getElementById('openModalButton');
+  const cancelButton = document.getElementById('cancelButton');
+
+  openModalButton.addEventListener('click', openPopup);
+  cancelButton.addEventListener('click', closePopup);
+
+  const modal = document.getElementById("popup");
+  const span = modal.querySelector(".close");
+
+  span.onclick = closePopup;
+
+  window.onclick = function (event) {
+    if (event.target === backdrop) {
+      closePopup();
+    }
+  };
+});
+
+
+
+
+
+// Fungsi untuk menangani pengiriman data tambahan
+document.getElementById("addDataForm").addEventListener("submit", async function (event) {
+  event.preventDefault();
+
+  const form = event.target;
+
+  const codeItem = generateCodeItem(form);
+  const itemName = form.elements.itemName.value;
+  const category = form.elements.category.value;
+  const location = form.elements.location.value;
+  const condition = form.elements.condition.value;
+  const purchaseDate = form.elements.purchaseDate.value;
+  const price = form.elements.price.value;
+  const adjustmentDate = form.elements.adjustmentDate.value;
+  const photoLink = form.elements.photoLink.value;
+  const amount = 1;
+
+  const data = {
+    codeItem,
+    itemName,
+    category,
+    location,
+    condition,
+    purchaseDate,
+    price,
+    adjustmentDate,
+    photoLink,
+    amount
+  };
+
+  data.action = 'saveData';
+
+  try {
+    const response = await fetch("/IT%20Management%20Asset/Backend/src/asset/input.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    });
+
+    if (response.ok) {
+      const responseData = await response.json();
+      console.log("Data saved successfully:", responseData);
+    } else {
+      console.error("Failed to save data.");
+    }
+  } catch (error) {
+    console.error("An error occurred:", error);
+  }
+});
+
+// Fungsi untuk menghasilkan kode item
+function generateCodeItem(form) {
+  const currentDate = new Date();
+  const year = currentDate.getFullYear().toString().substr(2);
+  const month = (currentDate.getMonth() + 1).toString().padStart(2, "0");
+  const day = currentDate.getDate().toString().padStart(2, "0");
+  const locationAbbreviation = form.elements.location.value.slice(-2);
+  const categoryAbbreviation = form.elements.category.value.slice(0, 2);
+  const idString = "0001";
+  return `${year}${month}${day}${locationAbbreviation}${categoryAbbreviation}${idString}`;
+}
